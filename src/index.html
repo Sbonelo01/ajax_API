@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Visitor Form</title>
+
+  <style type="text/css">
+    
+/* Bordered form */
+form {
+  border: 5px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password], input[type=age], input[type=time], input[type=date] {
+  width: 30%;
+  padding: 6px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: maroon;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 30%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Avatar image */
+img.avatar {
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+  align-content: center;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2 style="padding-left: 10.5%; color: maroon;">Visitor Form</h2>
+  </header>
+
+</body>
+ <form action="/single-page-app" method="get">
+
+  <span class="container">
+    <p>visitor name</p>
+    <label for="uname">
+    <input type="text" placeholder="Visitor Name" name="visitorName" required><br/>
+
+    <p>assistant</p>
+    <label for="uname">
+    <input type="text" placeholder="Assisted by" name="assistant" required><br/>
+    
+    <p>age</p>
+    <label for="uname">
+    <input type="age" placeholder="Visitors Age" name="visitorAge" required><br/>
+    
+    <p>date</p>
+    <label for="uname">
+    <input type="date" placeholder="Date of Visit" name="dateOfVisit" required><br/>
+
+    <p>time</p>
+    <label for="uname">
+    <input type="time" placeholder="Time of Visit" name="timeOfVisit" required><br/>
+
+    <p>comments</p>
+    <label for="uname">
+    <input type="text" placeholder="Comments" name="comments" required><br/>
+
+    <button type="submit">Submit</button>
+
+  </span>
+  <span>
+    <div class="trigger">something</div>
+      <div class="result"></div>
+        <div class="log"></div>
+  </span>
+</form>
+<script type="text/javascript" src="src/index.js"></script> 
+</body>
+</html>
