@@ -59,6 +59,11 @@ img.avatar {
   }
 }
 
+    table {
+      float: left;
+      padding: 0.9em;
+    }
+
   </style>
 </head>
 <body>
@@ -99,11 +104,52 @@ img.avatar {
 
   </span>
   <span>
-    <div class="trigger">something</div>
-      <div class="result"></div>
-        <div class="log"></div>
+    <div class="container">something</div>
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>Visitor Data</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table id="visitorTable" border= "2" cellpadding="10" cellspacing="8">
+            <thead>
+              <tr>
+                <th>visitor</th>
+                <th>assistant</th>
+                <th>age</th>
+                <th>date</th>
+                <th>time</th>
+                <th>comment</th>
+
+                <button>DELETE</button>
+              </tr>  
+            </thead>
+          </table>
+        </div>
+      </div>  
   </span>
 </form>
+<script type="text/javascript">
+  const addNewVisitor = async () => {
+
+  }
+
+  const viewVisitor = async () => {
+    $.ajax(
+        {
+          url:'/viewVisitor',
+          type: GET,
+          dataType: 'json'
+        }
+      )
+  }
+
+  const deleteVisitor = () => {
+
+  }
+
+</script>
 <script type="text/javascript" src="src/index.js"></script> 
 </body>
 </html>
