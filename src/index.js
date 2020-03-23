@@ -4,7 +4,7 @@ const {
     addNewVisitor,
     listAllVisitors,
     deleteVisitor
-} = require('../public/app');
+} = require('../src/app');
 const express = require('express');
 const path = require('path');
 const app = express();
