@@ -45,8 +45,8 @@ app.get('/viewVisitors', async(req, res) => {
     res.end();
 })
 
-const server = app.listen(9005, () => {
-    console.log('Server is running on port 9005')
+const server = app.listen(3000, () => {
+    console.log('Server is running on port 3000')
 })
 
 module.exports = {
