@@ -5,6 +5,7 @@ const {
     listAllVisitors,
     deleteVisitor
 } = require('../src/app');
+const port = 3000;
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -45,8 +46,8 @@ app.get('/viewVisitors', async(req, res) => {
     res.end();
 })
 
-const server = app.listen(3000, () => {
-    console.log('Server is running on port 3000')
+const server = app.listen({port}, () => {
+    console.log(`Server is running on port ${port}`)
 })
 
 module.exports = {

@@ -55,8 +55,13 @@ img.avatar {
     float: none;
   }
   .deleteButton {
-    width: 25%;
+    width: 10%;
   }
+}
+
+.deleteButton {
+  width: 7%;
+  paddings: 10pxs;
 }
 
     table {
@@ -100,7 +105,7 @@ img.avatar {
     <label for="uname">
     <input type="text" placeholder="Comments" name="comments" required><br/>
 
-    <button type="submit">Submit</button>
+    <button type="submit">SUBMIT</button>
 
   </span>
   <span>
@@ -122,7 +127,7 @@ img.avatar {
                 <th>time</th>
                 <th>comment</th>
 
-                <button class="deleteButton">DELETE</button>
+                <button class="deleteButton" onclick="alert('deleted!')">DELETE</button>
               </tr>  
             </thead>
           </table>
@@ -150,6 +155,7 @@ img.avatar {
   }
 
 </script>
-<script type="text/javascript" src="src/index.js"></script> 
+<script type="text/javascript" src="src/index.js"></script>
+<script type="text/javascript" src="src/app.js"></script> 
 </body>
 </html>

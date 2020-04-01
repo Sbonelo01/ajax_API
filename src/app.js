@@ -11,6 +11,22 @@ pool.connect((err, res) => {
     console.log(res);
 });
 
+const createTable = async () => {
+    return new Promise(async(resolve, reject) => {
+       let sql = await pool.query(`CREATE TABLE VISITORS`,
+            (err, results) => {
+                if (err) {
+                    reject(err);
+                }
+                console.log(results);
+                resolve(results)
+            }
+            )
+    })
+}
+
+createTable();
+
 const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
     return new Promise(async(resolve, reject) => {
         await pool.query(`INSERT INTO VISITORS(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments],
