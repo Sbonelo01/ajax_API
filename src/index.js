@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
 })
 
 app.post('/submit-form', async(req, res) => {
-    const fName = req.body.fName
-    const nameOfAssistant = req.body.nameOfAssistant
-    const age = req.body.age
+    const visitorName = req.body.visitorName
+    const assistant = req.body.assisitant
+    const visitorAge = req.body.visitorAge
     const dateOfVisit = req.body.dateOfVisit
     const timeOfVisit = req.body.timeOfVisit
     const comments = req.body.comments
@@ -46,7 +46,9 @@ app.get('/viewVisitors', async(req, res) => {
     res.end();
 })
 
-const server = app.listen({port}, () => {
+const server = app.listen({
+    port
+}, () => {
     console.log(`Server is running on port ${port}`)
 })
 

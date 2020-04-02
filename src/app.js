@@ -1,19 +1,21 @@
 "use strict"
 
 const dotenv = require('dotenv').config();
-const Pool = require("pg").Pool;
-const pool = new Pool();
+const {
+    Client
+} = require('pg')
 
-pool.connect((err, res) => {
-    if (err) {
-        console.log(err)
-    }
-    console.log(res);
-});
+const client = new Client({
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    password: process.env.PGPASSWORD,
+    port: process.env.PGPORT,
+    database: process.env.PGDATABASE
+})
 
-const createTable = async () => {
+const createTable = async() => {
     return new Promise(async(resolve, reject) => {
-       let sql = await pool.query(`CREATE TABLE VISITORS`,
+        let sql = await client.query(`CREATE TABLE VISITORS`,
             (err, results) => {
                 if (err) {
                     reject(err);
@@ -21,7 +23,7 @@ const createTable = async () => {
                 console.log(results);
                 resolve(results)
             }
-            )
+        )
     })
 }
 
@@ -29,7 +31,7 @@ createTable();
 
 const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
     return new Promise(async(resolve, reject) => {
-        await pool.query(`INSERT INTO VISITORS(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments],
+        await client.query(`INSERT INTO VISITORS(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments],
             (err, results) => {
                 if (err) {
                     reject(err);
@@ -41,7 +43,7 @@ const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, tim
 }
 const listAllVisitors = async() => {
     return new Promise(async(resolve, reject) => {
-        await pool.query(
+        await client.query(
             `SELECT * FROM VISITORS`,
             (err, results) => {
                 if (err) {
@@ -57,7 +59,7 @@ const listAllVisitors = async() => {
 
 const deleteVisitor = async(id) => {
     return new Promise(async(resolve, reject) => {
-        await pool.query(
+        await client.query(
             `DELETE FROM visitors WHERE id = $1`, [id],
             (err, results) => {
                 if (err) {
