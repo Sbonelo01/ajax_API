@@ -5,6 +5,7 @@ const {
     listAllVisitors,
     deleteVisitor
 } = require('../src/app');
+
 const port = 3000;
 const express = require('express');
 const path = require('path');
@@ -14,23 +15,25 @@ const urlencodedParser = bodyParser.urlencoded({
     extended: true
 });
 
-app.use(urlencodedParser)
+app.use(urlencodedParser);
+app.use('/', express.static(__dirname));
+app.get("/single-page-app", express.static(__dirname));
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname + "/index.html"))
+app.get('/single-page-app', (req, res) => {
+    return res.sendFile(`index.html`)
 })
 
 app.post('/submit-form', async(req, res) => {
-    const visitorName = req.body.visitorName
-    const assistant = req.body.assisitant
-    const visitorAge = req.body.visitorAge
-    const dateOfVisit = req.body.dateOfVisit
-    const timeOfVisit = req.body.timeOfVisit
-    const comments = req.body.comments
-    const id = await addNewVisitor(visitorName, assistant, age, dateOfVisit, timeOfVisit, comments);
+    let visitorName = req.body.visitorName
+    let assistant = req.body.assisitant
+    let visitorAge = req.body.visitorAge
+    let dateOfVisit = req.body.dateOfVisit
+    let timeOfVisit = req.body.timeOfVisit
+    let comments = req.body.comments
+    let visitor = await addNewVisitor(visitorName, assistant, age, dateOfVisit, timeOfVisit, comments);
     res.render("index", {
         visitorsName: req.body.visitorName,
-        nameOfAssistant: req.body.assistant,
+        assistant: req.body.assistant,
         age: req.body.visitorAge,
         dateOfVisit: req.body.dateOfVisit,
         timeOfVisit: req.body.timeOfVisit,
@@ -38,6 +41,14 @@ app.post('/submit-form', async(req, res) => {
         id: id
     });
     res.end()
+})
+
+res.status(200).json({ status: 'ok', visitor: vistor[0]});
+
+app.delete('/delete-visitor/:id', async (req, res) => {
+    const id = req.params.id;
+    const visitor = await deleteVisitor(id);
+    res.status(200).json({ status: 'ok', visitor: vistor[0]});
 })
 
 app.get('/viewVisitors', async(req, res) => {

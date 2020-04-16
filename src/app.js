@@ -13,9 +13,19 @@ const client = new Client({
     database: process.env.PGDATABASE
 })
 
+client.connect();
+
 const createTable = async() => {
     return new Promise(async(resolve, reject) => {
-        let sql = await client.query(`CREATE TABLE VISITORS`,
+        let sql = await client.query(`CREATE TABLE VISITORS (
+                id SERIAL PRIMARY KEY,
+                visitorName varchar(255),
+                assistant varchar(255),
+                visitorAge int,
+                dateOfVisit date,
+                timeOfVisit time,
+                comments text
+                )`,
             (err, results) => {
                 if (err) {
                     reject(err);
