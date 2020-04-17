@@ -4,6 +4,10 @@
   <title>Visitor Form</title>
 
   <style type="text/css">
+
+    /*
+     *  styling the form
+     */
     
 /* Bordered form */
 form {
@@ -69,6 +73,52 @@ img.avatar {
       padding: 0.9em;
     }
 
+    /*
+     *  Styling ajax output
+     */
+
+     body {
+  background: #f5f5f5;
+
+  h2 {
+    text-align: center;
+    font-family: arial;
+    color: #5a5a5a;
+  }
+
+  ul {
+    display: flex;
+    list-style:none;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content:center;
+    flex-basis: 80%;
+
+    li {
+      flex-basis: 20%;
+      display:flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      align-items:center;
+
+      span {
+        font-family: arial;
+        font-size: 14px;
+        color: #5a5a5a;
+        text-align: center;
+      }
+
+      img {
+        margin: 5px;
+        border-radius: 3px;
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.2); 
+      }
+    }
+  }
+
+}
+
+
   </style>
 </head>
 <body>
@@ -78,7 +128,7 @@ img.avatar {
   </header>
 
 </body>
- <form action="/single-page-app" method="post">
+ <form action="single-page-app" method="post">
 
   <span class="container">
     <p>visitor name</p>
@@ -107,39 +157,47 @@ img.avatar {
 
     <button type="submit">SUBMIT</button>
 
-  </span>
-  <span>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-6">
-          <h2 style="color: maroon;">Visitor Data</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <table id="visitorTable" border= "2" cellpadding="10" cellspacing="8">
-            <thead>
-              <tr>
-                <th>visitor</th>
-                <th>assistant</th>
-                <th>age</th>
-                <th>date</th>
-                <th>time</th>
-                <th>comment</th>
-
-                <button class="deleteButton" onclick="alert('deleted!')">DELETE</button>
-              </tr>  
-            </thead>
-          </table>
-        </div>
-      </div>  
-  </span>
-</form>
+<h1>output data</h1>
+<ul id="visitor"></ul>
 <script type="text/javascript">
+
+    function createNode(element) {
+      return document.createElement(element);
+  }
+
+  function append(parent, el) {
+      return parent.appendChild(el);
+  }
+
+  const ul = document.getElementById('visitor');
+  const url = 'http://localhost:3000/single-page-app';
+  fetch(url)
+      .then((resp) => resp.json())
+      .then(function(data) {
+          let visitors = data.results;
+          return authors.map(function(visitor) {
+              let li = createNode('li'),
+                  //img = createNode('img'),
+                  span = createNode('span');
+              //img.src = visitor.picture.medium;
+              span.innerHTML = `${visitor.id} ${visitor.visitorName} ${visitor.assistant} ${visitor.age} ${visitor.dateOfVisit} ${visitor.timeOfVisit} ${visitor.comments} `;
+              append(li) //img);
+              append(li, span);
+              append(ul, li);
+          })
+      })
+      .catch(function(error) {
+          console.log(JSON.stringify(error));
+      });
+
+/*
   const addNewVisitor = async () => {
 
   }
 
+*/
+
+/*
   const viewVisitor = async () => {
     $.ajax(
         {
@@ -150,10 +208,14 @@ img.avatar {
       )
   }
 
+*/
+
+/*
   const deleteVisitor = () => {
 
   }
 
+*/
 </script>
 <script type="text/javascript" src="src/index.js"></script>
 <script type="text/javascript" src="src/app.js"></script> 

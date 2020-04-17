@@ -43,7 +43,7 @@ app.post('/submit-form', async(req, res) => {
     res.end()
 })
 
-res.status(200).json({ status: 'ok', visitor: vistor[0]});
+//res.status(200).json({ status: 'ok', visitor: vistor[0]});
 
 app.delete('/delete-visitor/:id', async (req, res) => {
     const id = req.params.id;
