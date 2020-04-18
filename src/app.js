@@ -1,5 +1,5 @@
 "use strict"
-const server = require('./index')
+//const server = require('./index')
 const dotenv = require('dotenv').config();
 const {
     Client

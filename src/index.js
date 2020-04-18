@@ -21,7 +21,7 @@ app.use('/', express.static('src'));
 app.post("/single-page-app", express.static('src'));
 
 app.get('/single-page-app', (request, response) => {
-    return response.send(__dirname + '/index.html')
+    return response.sendFile(__dirname + '/index.html')
 })
 
 app.post('/single-page-app', async(request, response) => {
