@@ -1,24 +1,22 @@
 "use strict"
-
+const server = require('./index')
 const dotenv = require('dotenv').config();
 const {
     Client
 } = require('pg')
 
 const client = new Client({
-    host: '127.0.0.1',
+    host: 'localhost',
     user: 'user',
     password: 'pass',
     database: 'db',
     port: 5432
 })
 
-//console.log(client)
-
 client.connect();
 
 const createTable = async() => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async(request, response) => {
         let sql = await client.query(`CREATE TABLE IF NOT EXISTS VISITORS(
                 id SERIAL PRIMARY KEY,
                 visitorName varchar(255),
@@ -28,60 +26,59 @@ const createTable = async() => {
                 timeOfVisit time,
                 comments text
                 )`,
-            (err, results) => {
-                if (err) {
-                    reject(err);
+            (error, results) => {
+                if (error) {
+                    throw error;
                 }
                 console.log(sql);
-                resolve(sql)
+                //request(sql)
             }
         )
     })
 }
 
+                //request(results[0]);
 createTable();
 
 const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async(request, response) => {
         let results = await client.query(`INSERT INTO VISITORS(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments],
-            (err, results) => {
-                if (err) {
-                    reject(err);
+            (error, results) => {
+                if (error) {
+                    throw error;
                 }
-                console.log(results.rows[0]);
-                resolve(results[0]);
+                console.log(results.rows);
             });
     })
 };
 
 addNewVisitor();
 
-const listAllVisitors = async() => {
-    return new Promise(async(resolve, reject) => {
+const listAllVisitors = async(request, response) => {
         let results = await client.query(
-            `SELECT * FROM VISITORS`,
-            (err, results) => {
-                if (err) {
-                    reject(err);
+            `SELECT * FROM visitors ORDER BY id ASC`,
+            (error, results) => {
+                if (error) {
+                    throw error;
                 }
-                resolve(results.rows);
+                console.log(results.rows)
             }
         );
-    })
+        // request(results)
 };
 
 listAllVisitors();
 
 const deleteVisitor = async(id) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async(request, response) => {
         let results = await client.query(
             `DELETE FROM visitors WHERE id = $1`, [id],
-            (err, results) => {
-                if (err) {
-                    reject(err);
+            (error, results) => {
+                if (error) {
+                    throw error;
                 }
+                request(results.rows);
                 console.log('deleted!!!')
-                resolve(results);
             }
         );
     })
