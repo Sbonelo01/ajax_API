@@ -26,7 +26,7 @@ app.get('/single-page-app', (request, response) => {
 
 app.post('/single-page-app', async(request, response) => {
     let visitorName = request.body.visitorName
-    let assistant = request.body.assisitant
+    let assistant = request.body.assistant
     let visitorAge = request.body.visitorAge
     let dateOfVisit = request.body.dateOfVisit
     let timeOfVisit = request.body.timeOfVisit
@@ -36,7 +36,7 @@ app.post('/single-page-app', async(request, response) => {
         id: id,
         visitorName: request.body.visitorName,
         assistant: request.body.assistant,
-        age: request.body.visitorAge,
+        visitorAge: request.body.visitorAge,
         dateOfVisit: request.body.dateOfVisit,
         timeOfVisit: request.body.timeOfVisit,
         comments: request.body.comments
