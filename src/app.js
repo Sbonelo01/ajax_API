@@ -19,30 +19,30 @@ const createTable = async() => {
     return new Promise(async(request, response) => {
         let sql = await client.query(`CREATE TABLE IF NOT EXISTS VISITORS(
                 id SERIAL PRIMARY KEY,
-                visitorName varchar(255),
-                assistant varchar(255),
-                visitorAge int,
-                dateOfVisit date,
-                timeOfVisit time,
-                comments text
+                visitorName varchar(255) NOT NULL,
+                assistant varchar(255) NOT NULL,
+                visitorAge int NOT NULL,
+                dateOfVisit date NOT NULL,
+                timeOfVisit time NOT NULL,
+                comments text NOT NULL
                 )`,
             (error, results) => {
                 if (error) {
                     throw error;
                 }
-                console.log(sql);
+                //console.log(sql);
                 //request(sql)
             }
         )
     })
 }
 
-                //request(results[0]);
+//request(results[0]);
 createTable();
 
 const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
     return new Promise(async(request, response) => {
-        let results = await client.query(`INSERT INTO VISITORS(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments],
+        let results = await client.query(`INSERT INTO VISITORS(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`, [visitorName, assistantName, visitorAge, dateOfVisit, timeOfVisit, comments],
             (error, results) => {
                 if (error) {
                     throw error;
@@ -55,16 +55,16 @@ const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, tim
 addNewVisitor();
 
 const listAllVisitors = async(request, response) => {
-        let results = await client.query(
-            `SELECT * FROM visitors ORDER BY id ASC`,
-            (error, results) => {
-                if (error) {
-                    throw error;
-                }
-                console.log(results.rows)
+    let results = await client.query(
+        `SELECT * FROM visitors ORDER BY id ASC`,
+        (error, results) => {
+            if (error) {
+                throw error;
             }
-        );
-        // request(results)
+            console.log(results.rows)
+        }
+    );
+    // request(results)
 };
 
 listAllVisitors();

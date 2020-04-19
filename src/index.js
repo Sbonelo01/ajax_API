@@ -31,45 +31,56 @@ app.post('/single-page-app', async(request, response) => {
     let dateOfVisit = request.body.dateOfVisit
     let timeOfVisit = request.body.timeOfVisit
     let comments = request.body.comments
-    let visitor = await addNewVisitor(visitorName, assistant, age, dateOfVisit, timeOfVisit, comments);
-    response.render("index.html", {
+    let visitor = await addNewVisitor(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments);
+    response.render('index.html', {
+        id: id,
         visitorName: request.body.visitorName,
         assistant: request.body.assistant,
         age: request.body.visitorAge,
         dateOfVisit: request.body.dateOfVisit,
         timeOfVisit: request.body.timeOfVisit,
-        comments: request.body.comments,
-        id: id
+        comments: request.body.comments
     });
     response.end()
 })
 
 //response.status(200).json({ status: 'ok', visitor: vistor[0]});
 
-app.post('/visitor', async (request, response) => {
-    const addNew = await addNewVisitor();
-    response.status(200).JSON.stringify(addNew);
+const add = app.post('/visitor', async(request, response) => {
+    const visitor = await addNewVisitor();
+    response.status(200).json({
+        status: 'ok',
+        vistor: visitor
+    })
 })
 
-app.delete('/visitor/:id', async (request, response) => {
+const del = app.delete('/visitor/:id', async(request, response) => {
     const id = request.params.id;
     const visitor = await deleteVisitor(id);
-    response.status(200).json({ status: 'ok', visitor: vistor[0]});
+    response.status(200).json({
+        status: 'ok',
+        visitor: vistor[0]
+    });
 })
 
-app.get('/visitors', async(request, response) => {
+const list = app.get('/visitor', async(request, response) => {
     const name = request.params.visitorName;
     const visitor = await listAllVisitors();
-    //response.status(200).json({ status: 'ok', visitor[0] })
-    response.send(JSON.stringify(visitor));
+    response.status(200).json({ 
+        status: 'ok', 
+        visitor: visitor 
+    })
+    //response.send(JSON.stringify(visitor[0]));
     //response.end();
 })
 
-const server = app.listen({
-    port
-}, () => {
+const server = app.listen({port}, () => {
     console.log(`Server is running on port ${port}`)
 })
+
+// console.log(id[0])
+// console.log(list)
+//console.log(del.visitor)
 
 module.exports = {
     server

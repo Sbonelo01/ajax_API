@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Visitor Form</title>
 
-  <style type="text/css">
+  <style>
 
     /*
      *  styling the form
@@ -129,7 +129,7 @@ img.avatar {
   </header>
 
 </body>
- <form action="/single-page-app" method="get">
+ <form action="http://localhost:3000/single-page-app" method="post">
 
   <span class="container">
     <p>visitor name</p>
@@ -156,40 +156,72 @@ img.avatar {
     <label for="uname">
     <input type="text" placeholder="Comments" name="comments" required><br/>
 
-    <button type="submit">SUBMIT</button>
+    <button type="submit" id="btn">SUBMIT</button>
 
 <h1>output data</h1>
-<ul id="visitor"></ul>
+<button id="tb">test button</button>
+<!-- <ul id="visitor"></ul> -->
+<div id="info-container"></div>
 <script type="text/javascript">
 
-    function createNode(element) {
-      return document.createElement(element);
-  }
+   //solution
 
-  function append(parent, el) {
-      return parent.appendChild(el);
-  }
+   const getData = async() => {
+    let response = await fetch('http://localhost:3000/single-page-app');
+    let data = await response.json()
+      return data;
+   }
+getData()
+.then(data => console.log(data));
+//possible solution 1
+// let infoConatiner = getElementById('info-container');
+// let btn = document.getElementById('tb');
 
-  const ul = document.getElementById('visitor');
-  const url = 'http://localhost:3000/single-page-app';
-  fetch(url)
-      .then((resp) => resp.json())
-      .then(function(data) {
-          let visitors = data.results;
-          return authors.map(function(visitor) {
-              let li = createNode('li'),
-                  //img = createNode('img'),
-                  span = createNode('span');
-              //img.src = visitor.picture.medium;
-              span.innerHTML = `${visitor.id} ${visitor.visitorName} ${visitor.assistant} ${visitor.age} ${visitor.dateOfVisit} ${visitor.timeOfVisit} ${visitor.comments} `;
-              append(li) //img);
-              append(li, span);
-              append(ul, li);
-          })
-      })
-      .catch(function(error) {
-          console.log(JSON.stringify(error));
-      });
+// btn.addEventListener('click', () => {
+//   const getUrl = fetch('http://localhost:3000/single-page-app')
+//     // .then((resp) => resp.json())
+//     fetch.onload = () => {
+//       let ourData = JSON.parse(getUrl.responseText);
+//       renderHTML(ourData);
+//     };
+//     getUrl.send();
+// })
+
+// let renderHTML = (data) => {
+//   //to change animal conatiner
+//   infoConatiner.insertAdjacentHTML('beforeend', 'testing 123')
+// }
+
+//posible solution 2
+
+  //   function createNode(element) {
+  //     return document.createElement(element);
+  // }
+
+  // function append(parent, el) {
+  //     return parent.appendChild(el);
+  // }
+
+  // const ul = document.getElementById('visitor');
+  // const url = 'http://localhost:3000/single-page-app';
+  // fetch(url)
+  //     .then((resp) => resp.json())
+  //     .then(function(data) {
+  //         let visitors = data.results;
+  //         return visitors.map(function(visitor) {
+  //             let li = createNode('li'),
+  //                 //img = createNode('img'),
+  //                 span = createNode('span');
+  //             //img.src = visitor.picture.medium;
+  //             span.innerHTML = `${visitors.id} ${visitors.visitorName} ${visitors.assistantName} ${visitors.age} ${visitors.dateOfVisit} ${visitors.timeOfVisit} ${visitors.comments} `;
+  //             append(li) //img);
+  //             append(li, span);
+  //             append(ul, li);
+  //         })
+  //     })
+  //     .catch(function(error) {
+  //         console.log(JSON.stringify(error));
+  //     });
 
 /*
   const addNewVisitor = async () => {
@@ -218,7 +250,7 @@ img.avatar {
 
 */
 </script>
-<script type="text/javascript" src="src/index.js"></script>
-<script type="text/javascript" src="src/app.js"></script> 
+<!-- <script type="text/javascript" src="src/index.js"></script> -->
+<!-- <script type="text/javascript" src="src/app.js"></script>  -->
 </body>
 </html>
