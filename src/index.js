@@ -41,10 +41,10 @@ app.post('/single-page-app', async(request, response) => {
         timeOfVisit: request.body.timeOfVisit,
         comments: request.body.comments
     });
+    if(response.status == 2000) {
     response.end()
+    }
 })
-
-//response.status(200).json({ status: 'ok', visitor: vistor[0]});
 
 const add = app.post('/visitor', async(request, response) => {
     const visitor = await addNewVisitor();
@@ -70,17 +70,11 @@ const list = app.get('/visitor', async(request, response) => {
         status: 'ok', 
         visitor: visitor 
     })
-    //response.send(JSON.stringify(visitor[0]));
-    //response.end();
 })
 
 const server = app.listen({port}, () => {
     console.log(`Server is running on port ${port}`)
-})
-
-// console.log(id[0])
-// console.log(list)
-//console.log(del.visitor)
+});
 
 module.exports = {
     server

@@ -167,12 +167,13 @@ img.avatar {
    //solution
 
    const getData = async() => {
-    let response = await fetch('http://localhost:3000/single-page-app');
+    let response = await fetch('http://localhost:3000/single-page-app?visitorName=he&assistant=her&visitorAge=21&dateOfVisit=2020-01-01&timeOfVisit=12%3A34&comments=hola');
     let data = await response.json()
       return data;
    }
 getData()
 .then(data => console.log(data));
+
 //possible solution 1
 // let infoConatiner = getElementById('info-container');
 // let btn = document.getElementById('tb');

@@ -30,14 +30,12 @@ const createTable = async() => {
                 if (error) {
                     throw error;
                 }
-                //console.log(sql);
-                //request(sql)
+                //console.log(sql)
             }
         )
     })
 }
 
-//request(results[0]);
 createTable();
 
 const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
@@ -64,7 +62,6 @@ const listAllVisitors = async(request, response) => {
             console.log(results.rows)
         }
     );
-    // request(results)
 };
 
 listAllVisitors();
