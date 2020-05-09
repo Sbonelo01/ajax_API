@@ -12,7 +12,7 @@ const client = new Client({
     database: 'db',
     port: 5432
 })
-
+console.log(client.host.id)
 client.connect();
 
 const createTable = async() => {

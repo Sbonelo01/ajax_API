@@ -8,6 +8,7 @@ const {
 
 const port = process.env.PORT || 3000;
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
@@ -15,7 +16,8 @@ const urlencodedParser = bodyParser.urlencoded({
     extended: true
 });
 
-app.use(bodyParser.json())
+app.use(cors());
+app.use(bodyParser.json());
 app.use(urlencodedParser);
 app.use('/', express.static('src'));
 app.post("/single-page-app", express.static('src'));
@@ -53,6 +55,7 @@ const add = app.post('/visitor', async(request, response) => {
         vistor: visitor
     })
 })
+    // console.log(add);                                                                                                
 
 const del = app.delete('/visitor/:id', async(request, response) => {
     const id = request.params.id;
