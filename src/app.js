@@ -36,7 +36,6 @@ const createTable = async() => {
         )
     })
 }
-
 createTable();
 
 const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
@@ -52,8 +51,30 @@ const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, tim
     })
 
 };
-
 addNewVisitor();
+
+const displayAll = async() => {
+    let text = `SELECT * FROM visitors`;
+    try {
+        let query = await client.query(text, values)
+        return query.rows
+    } catch(error){
+        console.log(error)
+    }
+}
+displayAll()
+
+const addContent = async(object) => {
+    let text = `INSERT INTO visitors(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`
+    let values = [object.visitorName, object.assistant, object.visitorAge, object.dateOfVisit, object.timeOfVisit, object.comments];
+    try {
+        let query = await client.query(text, values)
+        return query.rows;
+    } catch(error){
+        console.log('ERROR',error);
+    }
+}
+addContent();
 
 const listAllVisitors = async(request, response) => {
     let results = await client.query(
@@ -66,8 +87,17 @@ const listAllVisitors = async(request, response) => {
         }
     );
 };
-
 listAllVisitors();
+
+const deleteAll = aync() => {
+    let text = `DELETE FROM visitors`
+    try {
+        let query = await.query(text, values)
+        console.log(query.rows)
+    } catch(error){
+        console.log(error)
+    }
+}
 
 const deleteVisitor = async(id) => {
     return new Promise(async(request, response) => {
@@ -84,11 +114,13 @@ const deleteVisitor = async(id) => {
         );
     })
 };
-
 deleteVisitor();
 
 module.exports = {
+    deleteAll,
+    createTable,
     addNewVisitor,
     listAllVisitors,
-    deleteVisitor
+    deleteVisitor,
+    displayAll
 }
