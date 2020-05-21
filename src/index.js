@@ -9,22 +9,29 @@ const {
 const port = process.env.PORT || 3000;
 const express = require('express');
 const cors = require('cors');
+const {
+    request
+} = require('http');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({
     extended: true
 });
+const {
+    addContent, 
+    displayAll
+} = require('./app')
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(urlencodedParser);
-app.use('/', express.static('src'));
+app.use('/', express.static('public'));
 
-app.post('/single-page-app', express.static('src'));
+app.post('/addNewVisitor', express.static('src'));
 
 app.get('/single-page-app', (request, response) => {
-    return response.sendFile(__dirname + '/index.html')
+    return response.status(200).sendFile(__dirname + '/index.html')
 })
 
 app.get('/viewVisitor', (request, response) => {
