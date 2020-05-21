@@ -37,7 +37,7 @@ app.post('/addNewVisitor', async (request, response) => {
     let content = await addContent(request.body)
     console.log(content);
     response.status(200).json({
-        message: 'success';
+        message: 'success'
     })
 });
 

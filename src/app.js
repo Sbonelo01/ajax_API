@@ -89,10 +89,10 @@ const listAllVisitors = async(request, response) => {
 };
 listAllVisitors();
 
-const deleteAll = aync() => {
+const deleteAll = async() => {
     let text = `DELETE FROM visitors`
     try {
-        let query = await.query(text, values)
+        let query = await client.query(text, values)
         console.log(query.rows)
     } catch(error){
         console.log(error)
