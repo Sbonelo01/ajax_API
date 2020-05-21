@@ -30,7 +30,7 @@ app.use('/', express.static('public'));
 
 
 app.get('/single-page-app', (request, response) => {
-    return response.status(200).sendFile(__dirname + '/index.html')
+    return response.status(200).sendFile(__dirname + '/public/index.html')
 })
 
 app.post('/addNewVisitor', async (request, response) => {
