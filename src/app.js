@@ -6,14 +6,15 @@ const {
 } = require('pg')
 
 const client = new Client({
-    host: 'localhost',
-    user: 'user',
-    password: 'pass',
-    database: 'db',
-    port: 5432
-})
-console.log(client.host.id)
-client.connect();
+        host: 'localhost',
+        user: 'user',
+        password: 'pass',
+        database: 'db',
+        port: 5432
+    })
+    //console.log(client.host.id)
+
+client.connect()
 
 const createTable = async() => {
     return new Promise(async(request, response) => {
@@ -47,7 +48,9 @@ const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, tim
                 }
                 console.log(results.rows);
             });
+
     })
+
 };
 
 addNewVisitor();
@@ -76,6 +79,7 @@ const deleteVisitor = async(id) => {
                 }
                 request(results.rows);
                 console.log('deleted!!!')
+
             }
         );
     })

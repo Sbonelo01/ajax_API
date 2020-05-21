@@ -20,10 +20,15 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(urlencodedParser);
 app.use('/', express.static('src'));
-app.post("/single-page-app", express.static('src'));
+
+app.post('/single-page-app', express.static('src'));
 
 app.get('/single-page-app', (request, response) => {
     return response.sendFile(__dirname + '/index.html')
+})
+
+app.get('/viewVisitor', (request, response) => {
+    return responce.sendFile(__dirname + '/index.html')
 })
 
 app.post('/single-page-app', async(request, response) => {
@@ -47,6 +52,7 @@ app.post('/single-page-app', async(request, response) => {
     response.end()
     }
 })
+
 
 const add = app.post('/visitor', async(request, response) => {
     const visitor = await addNewVisitor();
@@ -74,6 +80,8 @@ const list = app.get('/visitor', async(request, response) => {
         visitor: visitor 
     })
 })
+
+
 
 const server = app.listen({port}, () => {
     console.log(`Server is running on port ${port}`)

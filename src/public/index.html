@@ -156,83 +156,124 @@ img.avatar {
     <label for="uname">
     <input type="text" placeholder="Comments" name="comments" required><br/>
 
-    <button type="submit" id="btn">SUBMIT</button>
+    <button type="submit" id="btn" onclick="addNewVisitor()">SUBMIT</button>
 
-<h1>output data</h1>
-<button id="tb" onclick="addNewVisitor()">ADD DATA</button>
-<!-- <ul id="visitor"></ul> -->
-<div id="info-container"></div>
+<hr>
+<h3>output data</h3>
+  <div id="allVisitors">
+    <table id="table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Assistant</th>
+        <th>Age</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+      
+    </table>
+  </div>
+
 <script type="text/javascript">
 
-   //solution
+  async function addNewVisitor() {
+    let visitorName = document.getElementById("name").value;
+    let assistant = document.getElementById("assistant").value;
+    let visitorAge = document.getElementById("age").value;
+    let dateOfVisit = document.getElementById("date").value;
+    let timeOfVisit = document.getElementById("time").value;
+    let comments = document.getElementById("comment").value;
 
-   const getData = async() => {
-    let response = await fetch('http://localhost:3000/single-page-app?visitorName=he&assistant=her&visitorAge=21&dateOfVisit=2020-01-01&timeOfVisit=12%3A34&comments=hola');
-    let data = await response.json()
-      return data;
-   }
-getData()
-.then(data => console.log(data));
+    let user = {
+      visitorName,
+      assistant,
+      visitorAge,
+      dateOfVisit,
+      timeOfVisit,
+      comments
+    };
 
-//possible solution 1
-// let infoConatiner = getElementById('info-container');
-// let btn = document.getElementById('tb');
+    let send = await fetch('/addNewVisitor',{
+      method: 'POST',
+      headers: {
+        'contentType': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
 
-// btn.addEventListener('click', () => {
-//   const getUrl = fetch('http://localhost:3000/single-page-app')
-//     // .then((resp) => resp.json())
-//     fetch.onload = () => {
-//       let ourData = JSON.parse(getUrl.responseText);
-//       renderHTML(ourData);
-//     };
-//     getUrl.send();
-// })
-
-// let renderHTML = (data) => {
-//   //to change animal conatiner
-//   infoConatiner.insertAdjacentHTML('beforeend', 'testing 123')
-// }
-
-//posible solution 2
-
-  //   function createNode(element) {
-  //     return document.createElement(element);
-  // }
-
-  // function append(parent, el) {
-  //     return parent.appendChild(el);
-  // }
-
-  // const ul = document.getElementById('visitor');
-  // const url = 'http://localhost:3000/single-page-app';
-  // fetch(url)
-  //     .then((resp) => resp.json())
-  //     .then(function(data) {
-  //         let visitors = data.results;
-  //         return visitors.map(function(visitor) {
-  //             let li = createNode('li'),
-  //                 //img = createNode('img'),
-  //                 span = createNode('span');
-  //             //img.src = visitor.picture.medium;
-  //             span.innerHTML = `${visitors.id} ${visitors.visitorName} ${visitors.assistantName} ${visitors.age} ${visitors.dateOfVisit} ${visitors.timeOfVisit} ${visitors.comments} `;
-  //             append(li) //img);
-  //             append(li, span);
-  //             append(ul, li);
-  //         })
-  //     })
-  //     .catch(function(error) {
-  //         console.log(JSON.stringify(error));
-  //     });
-
-/*
-  const addNewVisitor = async () => {
-
+    let response = await send.json();
+    console.log(response);
   }
 
-*/
+  async function viewVisitors(){
+    let list = await fetch('/viewVisitors')
+    let seeList = await listen.json()
+    console.log(seeList)
+
+    let tr, table, elOne, elTwo, elThree, elFour, elFive, elSix
+    table = document.getElementById("table");
+
+    for(var counter = 0; counter < seeList.length; counter++){
+      tr = document.createElement("tr")
+    /*  eltd1 = document.createElement("name");
+        eltd1.innerHTML = seeList[counter].name
+        tr.appendChild(eltd1)
+        eltd2 = document.createElement("assistand"); 
+        eltd1.innerHTML = seeList[counter].assistant
+        tr.appendChild(eltd2) 
+        eltd3 = document.createElement("age");
+        eltd1.innerHTML = seeList[counter].age
+        tr.appendChild(eltd3)
+        eltd4 = document.createElement("date");
+        eltd1.innerHTML = seeList[counter].date
+        tr.appendChild(eltd4)
+        eltd5 = document.createElement("time");
+        eltd1.innerHTML = seeList[counter].time
+        tr.appendChild(eltd5)
+        eltd6 = document.createElement("comment");
+        eltd1.innerHTML = seeList[counter].comment
+        tr.appendChild(eltd6)*/
+
+        let row = table.inserRow(counter + 1)
+
+        elOne = row.insertCell(counter)
+        elTwo = row.insertCell(counter + 1)
+        elThree = row.insertCell(counter + 2)
+        elFour = row.insertCell(counter + 3)
+        elFive = row.insertCell(counter + 4)
+        elSix = row.insertCell(counter + 5)
+        
+        elOne.innerHTML[counter] = "visitorName";
+        elTwo.innerHTML[counter] = "assistant";
+        elThree.innerHTML[counter] = "visitorAge";
+        elFour.innerHTML[counter] = "dateOfVisit";
+        elFive.innerHTML[counter] = "Comments";
+    }
+  }
+
+  viewVisitors();
 
 </script>
 <!-- <script type="text/javascript" src="src/index.js"></script> -->
 <!-- <script type="text/javascript" src="src/app.js"></script>  -->
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
