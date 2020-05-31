@@ -13,12 +13,14 @@
 /* Bordered form */
 form {
   border: 5px solid #f1f1f1;
+  padding-right: 20%;
+  padding-left: 20%;
 }
 
 /* Full-width inputs */
 input[type=text], input[type=password], input[type=age], input[type=time], input[type=date] {
-  width: 30%;
-  padding: 6px 10px;
+  width: 100%;
+  height: 100%;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
@@ -38,14 +40,8 @@ button {
 
 /* Add a hover effect for buttons */
 button:hover {
-  opacity: 0.8;
-}
-
-/* Avatar image */
-img.avatar {
-  width: 15%;
-  height: 15%;
-  border-radius: 50%;
+  color: maroon;
+  background-color: white;
 }
 
 /* Add padding to containers */
@@ -73,7 +69,8 @@ img.avatar {
       float: left;
       padding: 0.9em;
     }
-
+  }
+}
     /*
      *  Styling ajax output
      */
@@ -119,17 +116,41 @@ img.avatar {
 
 }
 
+table {
+  width: 100%;
+  padding-bottom: 10px;
+}
 
-  </style>
+table th, table td {
+  padding: 5px;
+  text-align: center;
+  box-sizing: border-box;
+  border: solid 1px maroon;
+}
+
+table button {
+  cursor: pointer;
+  font-size: 18px;
+  padding: 10px 15px;
+  text-align: center;
+  border-radius: 5px;
+  color: #a82315;
+  border: solid 2px #eb6d60;
+  background-color: #ed7669;
+}
+
+
+</style>
 </head>
 <body>
 
   <header>
-    <h2 style="padding-left: 10.5%; color: maroon;">Visitor Form</h2>
+    <center><h2 style="color: maroon;">Visitor Form</h2></center>
   </header>
 
 </body>
- <form action="submit-form" method="post">
+<center>
+ <form action="add-new-visitor" method="post" autocomplete="off">
 
   <span class="container">
     <p>visitor name</p>
@@ -155,21 +176,21 @@ img.avatar {
     <p>comments</p>
     <label for="uname">
     <input type="text" placeholder="Comments" name="comments" required><br/>
-
-    <button type="submit" id="btn" onclick="addNewVisitor()">SUBMIT</button>
-
-<hr>
-<h3>output data</h3>
+    </label>
+    <center><button type="submit" id="btn">SUBMIT</button></center>
+  </center>
+  
+<center><h3><u>output data</u></h3></center>
 <div class="output">
             <table class="table">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>visitor name</th>
-                  <th>Assistant</th>
-                  <th>Age</th>
-                  <th>Date</th>
-                  <th>Time</th>
+                  <th>ID </th>
+                  <th>visitor name </th>
+                  <th>Assistant </th>
+                  <th>Age </th>
+                  <th>Date </th>
+                  <th>Time </th>
                   <th>Comments</th>
                   <th>&nbsp;</th>
                 </tr>
@@ -320,7 +341,11 @@ const init = async () => {
 
 init();
 
-module.exports = {init, submitForm, deleteTableRow}
+module.exports = {
+  init, 
+  submitForm, 
+  deleteTableRow
+}
 
 </script>
 <!-- <script type="text/javascript" src="src/index.js"></script> -->

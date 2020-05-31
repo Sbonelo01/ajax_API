@@ -1,11 +1,12 @@
 "use strict"
 
 const {
+    createTable,
     addNewVisitor,
     listAllVisitors,
     deleteVisitor,
     deleteAll,
-    addContent
+    updateVisitor
 } = require('./app');
 
 const port = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ const urlencodedParser = bodyParser.urlencoded({
 });
 
 app.use(cors());
+// app.use(express.bodyParser());
 app.use(bodyParser.json());
 app.use(urlencodedParser);
 app.use('/', express.static('public'));
@@ -50,8 +52,8 @@ app.post('/submit-form', async (request, response) => {
     response.end();
 });
 
-app.get('/addNewVisitor', async (request, response) => {
-    const visitor = await listAllVisitors()
+app.get('/add-new-visitor', async (request, response) => {
+    const visitor = await addNewVisitor()
     response.send(json.stringify(visitor));
     response.end();
 })
@@ -69,7 +71,7 @@ app.delete('/delete-visitor/:id', async (request, response) => {
 
 // View visitors
 app.get('/view-visitors', async (request, response) => { 
-    const visitors = await viewVisitors();
+    const visitors = await listAllVisitors();
     response.status(200).json({ 
         status: 'ok',
         visitors: visitors

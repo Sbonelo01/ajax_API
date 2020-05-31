@@ -1,6 +1,5 @@
 "use strict"
-//const server = require('./index')
-const dotenv = require('dotenv').config();
+
 const {
     Client
 } = require('pg')
@@ -13,12 +12,12 @@ const client = new Client({
         port: 5432
     })
 
-console.log(client)
+//console.log(client)
 
-client.connect((error, response) => {
+client.connect((error) => {
     if(error){
         console.log(error)
-    }console.log(response);
+    }console.log('CONNECTED...')
 })
 
 const createTable = async() => {
@@ -36,7 +35,7 @@ const createTable = async() => {
                 if (error) {
                     throw error;
                 }
-                console.log(sql)
+                //console.log(sql)
             }
         )
     })
@@ -71,22 +70,7 @@ const listAllVisitors = async(request, response) => {
 };
 listAllVisitors();
 
-// const updateVisitor = async(id, visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
-//     return new Promise(async(request, response) => {
-//         let results = await client.query(`UPDATE visitors SET id = $1, visitorName = $2, assistant = $3, visitorAge = $4, dateOfVisit = $5, timeOfVisit = $6, comments = $7 RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments], 
-//         (error, results) => {
-//             if(error){
-//                 throw error;
-//             }
-//             console.log(results.rows)
-//         }   
-//         );
-//     })
-// }
-// updateVisitor()
-
 const updateVisitor = async (id, visitor_name, visitor_age, date_of_visit, time_of_visit, assistant, comments) => {
-
     const sql = `
         UPDATE 
         visitors SET
@@ -94,12 +78,8 @@ const updateVisitor = async (id, visitor_name, visitor_age, date_of_visit, time_
         WHERE id = $1 
         RETURNING *
     `;
-    
     const data = [id, visitor_name, visitor_age, date_of_visit, time_of_visit, assistant, comments];
-
     const res = await client.query(sql, data);
-    
-    // Results
     return res.rows
 }
 
@@ -133,7 +113,7 @@ const deleteAll = async() => {
         )    
     })
 }
-deleteAll();
+//deleteAll();
 
 module.exports = {
     createTable,
