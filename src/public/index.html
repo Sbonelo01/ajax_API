@@ -129,7 +129,7 @@ img.avatar {
   </header>
 
 </body>
- <form action="http://localhost:3000/single-page-app" method="post">
+ <form action="submit-form" method="post">
 
   <span class="container">
     <p>visitor name</p>
@@ -160,98 +160,167 @@ img.avatar {
 
 <hr>
 <h3>output data</h3>
-  <div id="allVisitors">
-    <table id="table">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Assistant</th>
-        <th>Age</th>
-        <th>Date</th>
-        <th>Time</th>
-      </tr>
-      
-    </table>
+<div class="output">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>visitor name</th>
+                  <th>Assistant</th>
+                  <th>Age</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Comments</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody id="visitors">
+              </tbody>
+            </table>
+        </div>
   </div>
 
 <script type="text/javascript">
 
-  async function addNewVisitor() {
-    let visitorName = document.getElementById("name").value;
-    let assistant = document.getElementById("assistant").value;
-    let visitorAge = document.getElementById("age").value;
-    let dateOfVisit = document.getElementById("date").value;
-    let timeOfVisit = document.getElementById("time").value;
-    let comments = document.getElementById("comment").value;
+const form = document.forms[0];
 
-    let user = {
-      visitorName,
-      assistant,
-      visitorAge,
-      dateOfVisit,
-      timeOfVisit,
-      comments
-    };
+// Form submit
+form.onsubmit = async e => {
+  e.preventDefault();
 
-    let send = await fetch('/addNewVisitor',{
-      method: 'POST',
-      headers: {
-        'contentType': 'application/json'
-      },
-      body: JSON.stringify(user)
-    })
-
-    let response = await send.json();
-    console.log(response);
+  // Form inputs
+  const body = {
+    visitorName:       e.target[0].value,
+    assistant:      e.target[1].value,
+    dateOfVisit:  e.target[2].value,
+    timeOfVisit:  e.target[3].value,
+    assistant:    e.target[4].value,
+    comments:     e.target[5].value,
   }
 
-  async function viewVisitors(){
-    let list = await fetch('/viewVisitors')
-    let seeList = await listen.json()
-    console.log(seeList)
+  // Send request
+  submitForm(body)
 
-    let tr, table, elOne, elTwo, elThree, elFour, elFive, elSix
-    table = document.getElementById("table");
-
-    for(var counter = 0; counter < seeList.length; counter++){
-      tr = document.createElement("tr")
-    /*  eltd1 = document.createElement("name");
-        eltd1.innerHTML = seeList[counter].name
-        tr.appendChild(eltd1)
-        eltd2 = document.createElement("assistand"); 
-        eltd1.innerHTML = seeList[counter].assistant
-        tr.appendChild(eltd2) 
-        eltd3 = document.createElement("age");
-        eltd1.innerHTML = seeList[counter].age
-        tr.appendChild(eltd3)
-        eltd4 = document.createElement("date");
-        eltd1.innerHTML = seeList[counter].date
-        tr.appendChild(eltd4)
-        eltd5 = document.createElement("time");
-        eltd1.innerHTML = seeList[counter].time
-        tr.appendChild(eltd5)
-        eltd6 = document.createElement("comment");
-        eltd1.innerHTML = seeList[counter].comment
-        tr.appendChild(eltd6)*/
-
-        let row = table.inserRow(counter + 1)
-
-        elOne = row.insertCell(counter)
-        elTwo = row.insertCell(counter + 1)
-        elThree = row.insertCell(counter + 2)
-        elFour = row.insertCell(counter + 3)
-        elFive = row.insertCell(counter + 4)
-        elSix = row.insertCell(counter + 5)
-        
-        elOne.innerHTML[counter] = "visitorName";
-        elTwo.innerHTML[counter] = "assistant";
-        elThree.innerHTML[counter] = "visitorAge";
-        elFour.innerHTML[counter] = "dateOfVisit";
-        elFive.innerHTML[counter] = "Comments";
-    }
+  // Clear inputs
+  for(let i = 0; i < e.target.length; i++) {
+    e.target[i].value = null;
   }
+}
 
-  viewVisitors();
+const submitForm = async body => {
+  const res = await fetch('http://127.0.0.1:3000/add-new-visitor', {
+    method: 'post',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json();
+  createTableRows([data.visitor]);
+
+  return data;
+}
+
+// Create table rows
+const createTableRows = visitors => {
+  const tbody = document.getElementById('visitors');
+
+  for (let i = 0; i < visitors.length; i++) {
+    let row = createTableColumns(visitors[i]);
+
+    // Set attributes
+    row.setAttribute('id', `visitor-${visitors[i].id}`);
+    tbody.prepend(row);
+  }
+}
+
+// Create table columns
+const createTableColumns = visitor => {
+
+  // Create a row
+  let row = document.createElement('tr');
+
+  // Create ID column
+  let tdID = document.createElement('td');
+  tdID.innerHTML = visitor.id;
+  row.appendChild(tdID);
+
+  // Create Name column
+  let tdName = document.createElement('td');
+  tdName.innerHTML = visitor.name;
+  row.appendChild(tdName)
+
+  // Create Age column
+  let tdAge = document.createElement('td');
+  tdAge.innerHTML = visitor.age;
+  row.appendChild(tdAge);
+
+  // Create Date column
+  let tdDate = document.createElement('td');
+  tdDate.innerHTML = new Date(visitor.date_of_visit).toLocaleDateString();
+  row.appendChild(tdDate);
+
+  // Create Time column
+  let tdTime = document.createElement('td');
+  tdTime.innerHTML = visitor.time_of_visit;
+  row.appendChild(tdTime);
+
+  // Create Assistant column
+  let tdAssistant = document.createElement('td');
+  tdAssistant.innerHTML = visitor.assistant;
+  row.appendChild(tdAssistant);
+
+  // Create Comments column
+  let tdComments = document.createElement('td');
+  tdComments.innerHTML = visitor.comments;
+  row.appendChild(tdComments);
+  
+  // Create a delete button
+  const button = createDeleteButton(visitor.id);
+  row.appendChild(button);
+
+  return row;
+}
+
+// Row delete button
+const createDeleteButton = id => {
+  let td = document.createElement('td');
+
+  // Set attributes
+  td.innerHTML = `<button onclick="deleteTableRow(${id})">X</button>`;
+
+  return td;
+}
+
+// Delete table row
+const deleteTableRow = async id => {
+  const tbody = document.getElementById('visitors');
+  const row = document.getElementById(`visitor-${id}`);
+  
+  // Send request
+  const res = await fetch(`http://127.0.0.1:3000/delete-visitor/${id}`, {
+    method: 'delete'
+  });
+
+  const data = await res.json();
+
+  if (data.status == 'ok') {
+    // Remove element
+    tbody.removeChild(row);
+  }
+}
+
+// Initialize table data
+const init = async () => {
+  
+  const res = await fetch('http://127.0.0.1:3000/view-visitors');
+  const data = await res.json();
+
+  createTableRows(data.visitors);
+}
+
+init();
+
+module.exports = {init, submitForm, deleteTableRow}
 
 </script>
 <!-- <script type="text/javascript" src="src/index.js"></script> -->
