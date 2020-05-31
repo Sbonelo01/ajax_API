@@ -12,9 +12,14 @@ const client = new Client({
         database: 'db',
         port: 5432
     })
-    //console.log(client.host.id)
 
-client.connect()
+console.log(client)
+
+client.connect((error, response) => {
+    if(error){
+        console.log(error)
+    }console.log(response);
+})
 
 const createTable = async() => {
     return new Promise(async(request, response) => {
@@ -31,7 +36,7 @@ const createTable = async() => {
                 if (error) {
                     throw error;
                 }
-                //console.log(sql)
+                console.log(sql)
             }
         )
     })
@@ -53,29 +58,6 @@ const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, tim
 };
 addNewVisitor();
 
-const displayAll = async() => {
-    let text = `SELECT * FROM visitors`;
-    try {
-        let query = await client.query(text, values)
-        return query.rows
-    } catch(error){
-        console.log(error)
-    }
-}
-displayAll()
-
-const addContent = async(object) => {
-    let text = `INSERT INTO visitors(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`
-    let values = [object.visitorName, object.assistant, object.visitorAge, object.dateOfVisit, object.timeOfVisit, object.comments];
-    try {
-        let query = await client.query(text, values)
-        return query.rows;
-    } catch(error){
-        console.log('ERROR',error);
-    }
-}
-addContent();
-
 const listAllVisitors = async(request, response) => {
     let results = await client.query(
         `SELECT * FROM visitors ORDER BY id ASC`,
@@ -89,14 +71,36 @@ const listAllVisitors = async(request, response) => {
 };
 listAllVisitors();
 
-const deleteAll = async() => {
-    let text = `DELETE FROM visitors`
-    try {
-        let query = await client.query(text, values)
-        console.log(query.rows)
-    } catch(error){
-        console.log(error)
-    }
+// const updateVisitor = async(id, visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments) => {
+//     return new Promise(async(request, response) => {
+//         let results = await client.query(`UPDATE visitors SET id = $1, visitorName = $2, assistant = $3, visitorAge = $4, dateOfVisit = $5, timeOfVisit = $6, comments = $7 RETURNING *`, [visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments], 
+//         (error, results) => {
+//             if(error){
+//                 throw error;
+//             }
+//             console.log(results.rows)
+//         }   
+//         );
+//     })
+// }
+// updateVisitor()
+
+const updateVisitor = async (id, visitor_name, visitor_age, date_of_visit, time_of_visit, assistant, comments) => {
+
+    const sql = `
+        UPDATE 
+        visitors SET
+        name = $2, age = $3, date_of_visit = $4, time_of_visit = $5, assistant = $6, comments = $7 
+        WHERE id = $1 
+        RETURNING *
+    `;
+    
+    const data = [id, visitor_name, visitor_age, date_of_visit, time_of_visit, assistant, comments];
+
+    const res = await client.query(sql, data);
+    
+    // Results
+    return res.rows
 }
 
 const deleteVisitor = async(id) => {
@@ -108,19 +112,34 @@ const deleteVisitor = async(id) => {
                     throw error;
                 }
                 request(results.rows);
-                console.log('deleted!!!')
-
+                console.log('DELETED VISITOR !')
             }
         );
     })
 };
 deleteVisitor();
 
+const deleteAll = async() => {
+    return new Promise(async(request, response) => {
+        let results = await client.query(
+            `DELETE FROM visitors RETURNING *`,
+            (error, results) => {
+                if(error){
+                    throw error;
+                }
+                request(results.rows)
+                console.log('DELETED ALL!')
+            }
+        )    
+    })
+}
+deleteAll();
+
 module.exports = {
-    deleteAll,
     createTable,
     addNewVisitor,
     listAllVisitors,
     deleteVisitor,
-    displayAll
+    deleteAll,
+    updateVisitor,
 }
