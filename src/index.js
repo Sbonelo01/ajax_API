@@ -39,9 +39,9 @@ app.post('/submit-form', async (request, response) => {
     const timeOfVisit = request.body.timeOfVisit
     const comments = request.body.comments
     const id = await addNewVisitor(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments);
-    res.render("index", { visitorsName: request.body.visitorName,
+    res.render("index", { visitorName: request.body.visitorName,
                         nameOfAssistant: request.body.assistant,
-                        age: request.body.visitorAge,
+                        visitorAge: request.body.visitorAge,
                         dateOfVisit: request.body.dateOfVisit,
                         timeOfVisit: request.body.timeOfVisit,
                         comments: request.body.comments,
@@ -68,7 +68,7 @@ app.delete('/delete-visitor/:id', async (request, response) => {
 });
 
 // View visitors
-app.get('/view-visitors', async (requset, response) => { 
+app.get('/view-visitors', async (request, response) => { 
     const visitors = await viewVisitors();
     response.status(200).json({ 
         status: 'ok',

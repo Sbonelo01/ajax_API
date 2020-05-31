@@ -190,12 +190,12 @@ form.onsubmit = async e => {
 
   // Form inputs
   const body = {
-    visitorName:       e.target[0].value,
-    assistant:      e.target[1].value,
-    dateOfVisit:  e.target[2].value,
-    timeOfVisit:  e.target[3].value,
-    assistant:    e.target[4].value,
-    comments:     e.target[5].value,
+    visitorName: e.target[0].value,
+    assistant: e.target[1].value,
+    visitorAge: e.target[2].value,
+    dateOfVisit: e.target[3].value,
+    timeOfVisit: e.target[4].value,
+    comments: e.target[5].value,
   }
 
   // Send request
@@ -208,13 +208,13 @@ form.onsubmit = async e => {
 }
 
 const submitForm = async body => {
-  const res = await fetch('http://127.0.0.1:3000/add-new-visitor', {
+  const response = await fetch('http://127.0.0.1:3000/add-new-visitor', {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(body)
   });
 
-  const data = await res.json();
+  const data = await response.json();
   createTableRows([data.visitor]);
 
   return data;
@@ -246,28 +246,28 @@ const createTableColumns = visitor => {
 
   // Create Name column
   let tdName = document.createElement('td');
-  tdName.innerHTML = visitor.name;
+  tdName.innerHTML = visitor.visitorName;
   row.appendChild(tdName)
-
-  // Create Age column
-  let tdAge = document.createElement('td');
-  tdAge.innerHTML = visitor.age;
-  row.appendChild(tdAge);
-
-  // Create Date column
-  let tdDate = document.createElement('td');
-  tdDate.innerHTML = new Date(visitor.date_of_visit).toLocaleDateString();
-  row.appendChild(tdDate);
-
-  // Create Time column
-  let tdTime = document.createElement('td');
-  tdTime.innerHTML = visitor.time_of_visit;
-  row.appendChild(tdTime);
 
   // Create Assistant column
   let tdAssistant = document.createElement('td');
   tdAssistant.innerHTML = visitor.assistant;
   row.appendChild(tdAssistant);
+
+  // Create Age column
+  let tdAge = document.createElement('td');
+  tdAge.innerHTML = visitor.visitorAge;
+  row.appendChild(tdAge);
+
+  // Create Date column
+  let tdDate = document.createElement('td');
+  tdDate.innerHTML = new Date(visitor.dateOfVisit).toLocaleDateString();
+  row.appendChild(tdDate);
+
+  // Create Time column
+  let tdTime = document.createElement('td');
+  tdTime.innerHTML = visitor.timeOfVisit;
+  row.appendChild(tdTime);
 
   // Create Comments column
   let tdComments = document.createElement('td');
@@ -286,7 +286,7 @@ const createDeleteButton = id => {
   let td = document.createElement('td');
 
   // Set attributes
-  td.innerHTML = `<button onclick="deleteTableRow(${id})">X</button>`;
+  td.innerHTML = `<button onclick="deleteTableRow(${id})">DELETE</button>`;
 
   return td;
 }
@@ -297,11 +297,11 @@ const deleteTableRow = async id => {
   const row = document.getElementById(`visitor-${id}`);
   
   // Send request
-  const res = await fetch(`http://127.0.0.1:3000/delete-visitor/${id}`, {
+  const response = await fetch(`http://127.0.0.1:3000/delete-visitor/${id}`, {
     method: 'delete'
   });
 
-  const data = await res.json();
+  const data = await response.json();
 
   if (data.status == 'ok') {
     // Remove element
@@ -312,8 +312,8 @@ const deleteTableRow = async id => {
 // Initialize table data
 const init = async () => {
   
-  const res = await fetch('http://127.0.0.1:3000/view-visitors');
-  const data = await res.json();
+  const response = await fetch('http://127.0.0.1:3000/view-visitors');
+  const data = await response.json();
 
   createTableRows(data.visitors);
 }
