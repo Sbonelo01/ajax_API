@@ -1,12 +1,12 @@
 "use strict"
 
 const {
-    createTable,
     addNewVisitor,
-    listAllVisitors,
+    updateVisitor,
     deleteVisitor,
-    deleteAll,
-    updateVisitor
+    deleteVisitors,
+    viewVisitors,
+    viewVisitor
 } = require('./app');
 
 const port = process.env.PORT || 3000;
@@ -23,7 +23,6 @@ const urlencodedParser = bodyParser.urlencoded({
 });
 
 app.use(cors());
-// app.use(express.bodyParser());
 app.use(bodyParser.json());
 app.use(urlencodedParser);
 app.use('/', express.static('public'));
@@ -33,31 +32,22 @@ app.get('/single-page-app', (request, response) => {
     return response.status(200).sendFile(__dirname + '/public/index.html')
 })
 
-app.post('/submit-form', async (request, response) => {
-    const visitorName = request.body.visitorName
-    const assistant = request.body.assistant
-    const visitorAge = request.body.visitorAge
-    const dateOfVisit = request.body.dateOfVisit
-    const timeOfVisit = request.body.timeOfVisit
-    const comments = request.body.comments
-    const id = await addNewVisitor(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments);
-    res.render("index", { visitorName: request.body.visitorName,
-                        nameOfAssistant: request.body.assistant,
-                        visitorAge: request.body.visitorAge,
-                        dateOfVisit: request.body.dateOfVisit,
-                        timeOfVisit: request.body.timeOfVisit,
-                        comments: request.body.comments,
-                        id: id
-    })
-    response.end();
+app.post('/add-new-visitor', async (request, response) => {
+    let visitorName = request.body.visitorName
+    let assistant = request.body.assistant
+    let visitorAge = request.body.visitorAge
+    let dateOfVisit = request.body.dateOfVisit
+    let timeOfVisit = request.body.timeOfVisit
+    let comments = request.body.comments
+
+    const visitor = await addNewVisitor(visitorName, assistant, visitorAge, dateOfVisit, timeOfVisit, comments);
+ 
+    response.status(200).json({
+        status: 'ok',
+        visitor: visitor[0]
+    });
+    //response.end();
 });
-
-app.get('/add-new-visitor', async (request, response) => {
-    const visitor = await addNewVisitor()
-    response.send(json.stringify(visitor));
-    response.end();
-})
-
 
 // Delete visitor
 app.delete('/delete-visitor/:id', async (request, response) => {
@@ -71,7 +61,7 @@ app.delete('/delete-visitor/:id', async (request, response) => {
 
 // View visitors
 app.get('/view-visitors', async (request, response) => { 
-    const visitors = await listAllVisitors();
+    const visitors = await viewVisitors();
     response.status(200).json({ 
         status: 'ok',
         visitors: visitors

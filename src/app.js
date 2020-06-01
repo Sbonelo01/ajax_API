@@ -5,24 +5,25 @@ const {
 } = require('pg')
 
 const client = new Client({
-        host: 'localhost',
-        user: 'user',
-        password: 'pass',
-        database: 'db',
-        port: 5432
-    })
+    host: 'localhost',
+    user: 'user',
+    password: 'pass',
+    database: 'db',
+    port: 5432
+})
 
 //console.log(client)
 
 client.connect((error) => {
-    if(error){
+    if (error) {
         console.log(error)
-    }console.log('CONNECTED...')
+    }
+    console.log('CONNECTED...')
 })
 
 const createTable = async() => {
     return new Promise(async(request, response) => {
-        let sql = await client.query(`CREATE TABLE IF NOT EXISTS VISITORS(
+        let sql = await client.query(`CREATE TABLE IF NOT EXISTS visitors(
                 id SERIAL PRIMARY KEY,
                 visitorName varchar(255) NOT NULL,
                 assistant varchar(255) NOT NULL,
@@ -55,7 +56,6 @@ const addNewVisitor = async(visitorName, assistant, visitorAge, dateOfVisit, tim
     })
 
 };
-addNewVisitor();
 
 const listAllVisitors = async(request, response) => {
     let results = await client.query(
@@ -68,9 +68,8 @@ const listAllVisitors = async(request, response) => {
         }
     );
 };
-listAllVisitors();
 
-const updateVisitor = async (id, visitor_name, visitor_age, date_of_visit, time_of_visit, assistant, comments) => {
+const updateVisitor = async(id, visitor_name, visitor_age, date_of_visit, time_of_visit, assistant, comments) => {
     const sql = `
         UPDATE 
         visitors SET
@@ -97,29 +96,55 @@ const deleteVisitor = async(id) => {
         );
     })
 };
-deleteVisitor();
 
-const deleteAll = async() => {
+const deleteVisitors = async() => {
+        return new Promise(async(request, response) => {
+            let results = await client.query(
+                `DELETE FROM visitors RETURNING *`,
+                (error, results) => {
+                    if (error) {
+                        throw error;
+                    }
+                request(results.rows)
+                console.log('DELETED ALL!')
+            }
+        )
+    })
+}
+
+const viewVisitor = async(id) => {
     return new Promise(async(request, response) => {
         let results = await client.query(
-            `DELETE FROM visitors RETURNING *`,
+            `SELECT * FROM visitors WHERE id = $1`, [id],
+            (error, results) => {
+                if(error) {
+                    throw error;
+                }
+                request(results.rows)
+            }
+        )
+    })
+}
+
+const viewVisitors = async() => {
+    return new Promise(async(request, response) => {
+        let results = await client.query(
+            `SELECT * FROM visitors`,
             (error, results) => {
                 if(error){
                     throw error;
                 }
                 request(results.rows)
-                console.log('DELETED ALL!')
             }
-        )    
+        )
     })
 }
-//deleteAll();
 
 module.exports = {
-    createTable,
     addNewVisitor,
-    listAllVisitors,
-    deleteVisitor,
-    deleteAll,
     updateVisitor,
+    deleteVisitor,
+    deleteVisitors,
+    viewVisitors,
+    viewVisitor
 }

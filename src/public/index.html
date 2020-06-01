@@ -139,7 +139,6 @@ table button {
   background-color: #ed7669;
 }
 
-
 </style>
 </head>
 <body>
@@ -150,7 +149,7 @@ table button {
 
 </body>
 <center>
- <form action="add-new-visitor" method="post" autocomplete="off">
+ <form action="submit-form" method="post" autocomplete="off">
 
   <span class="container">
     <p>visitor name</p>
@@ -179,7 +178,7 @@ table button {
     </label>
     <center><button type="submit" id="btn">SUBMIT</button></center>
   </center>
-  
+
 <center><h3><u>output data</u></h3></center>
 <div class="output">
             <table class="table">
@@ -203,6 +202,7 @@ table button {
 
 <script type="text/javascript">
 
+
 const form = document.forms[0];
 
 // Form submit
@@ -224,14 +224,14 @@ form.onsubmit = async e => {
 
   // Clear inputs
   for(let i = 0; i < e.target.length; i++) {
-    e.target[i].value = null;
+    e.target[i].value = "";
   }
 }
 
 const submitForm = async body => {
   const response = await fetch('http://127.0.0.1:3000/add-new-visitor', {
     method: 'post',
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'application/JSON'},
     body: JSON.stringify(body)
   });
 
@@ -341,15 +341,14 @@ const init = async () => {
 
 init();
 
-module.exports = {
-  init, 
-  submitForm, 
-  deleteTableRow
-}
+// module.exports = {
+//   init, 
+//   submitForm, 
+//   deleteTableRow
+// }
+
 
 </script>
-<!-- <script type="text/javascript" src="src/index.js"></script> -->
-<!-- <script type="text/javascript" src="src/app.js"></script>  -->
 </body>
 </html>
 
