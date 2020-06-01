@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="icon" type="image/png" href="image/account.png">
   <meta charset="UTF-8">
   <title>Visitor Form</title>
 
@@ -307,7 +308,7 @@ const createDeleteButton = id => {
   let td = document.createElement('td');
 
   // Set attributes
-  td.innerHTML = `<button onclick="deleteTableRow(${id})">DELETE</button>`;
+  td.innerHTML = `<button onclick="deleteTableRow(${id})">X</button>`;
 
   return td;
 }
