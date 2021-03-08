@@ -10,6 +10,7 @@ Requirements:
 
 To run the project:
 >clone the project via `git clone https://github.com/Sbonelo01/ajax_Api.git`, 
+
 >got to the `docker-compose.yml` file and run:
 `docker-compose up` if that does not work, try using `sudo docker-compose up`. 
 
